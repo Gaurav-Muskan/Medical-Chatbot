@@ -1,6 +1,7 @@
 from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 
 # Step 1: Load raw PDF(s)
 DATA_PATH="data/"
@@ -25,9 +26,13 @@ print("Length of text chunks:- ", len(text_chunks))
 
 # Stpe 3: Create Vector Embeddings
 def get_embedding_model():
-    embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2 ")
+    embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     return embedding_model
 
 embedding_model = get_embedding_model()
 
 # Stpe 4: Store embeddings in FAISS
+DB_FAISS_PATH="D:\VS Code\Medical-Chatbot/vectorstore/db_faiss"
+# Generate embeddings for the text chunks and store them in a FAISS vector database
+db=FAISS.from_documents(text_chunks, embedding_model) 
+db.save_local(DB_FAISS_PATH)
