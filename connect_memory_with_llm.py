@@ -51,3 +51,9 @@ qa_chain = RetrievalQA.from_chain_type(
     return_source_documents=True,
     chain_type_kwargs={'prompt':set_custom_prompt(CUSTOM_PROMPT_TEMPLATE)}
 )
+
+# Invoke with single query
+user_query=input("Write Query Here: ")
+response=qa_chain.invoke({'query':user_query})
+print("RESULTS: ",response["result"])
+print("SOURCE DOCUMENTS: ",response["source_documents"])
